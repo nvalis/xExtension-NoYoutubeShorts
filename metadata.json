@@ -1,0 +1,8 @@
+{
+	"name": "NoYoutubeShorts",
+	"author": "nvalis",
+	"description": "Filter out shorts from Youtube feeds",
+	"version": "1.0",
+	"entrypoint": "NoYoutubeShorts",
+	"type": "user"
+}
