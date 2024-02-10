@@ -17,12 +17,7 @@ class NoYoutubeShortsExtension extends Minz_Extension {
 
 		if ($headers[0] == 'HTTP/1.1 200 OK') {
 			$entry->_isRead(true); // shorts video detected, set entry to read
-			return $entry;
-		} elseif ($headers[0] == 'HTTP/1.1 303 See Other') {
-			if ($headers['Location'] == 'https://www.youtube.com/watch?v=' . $videoID) {
-				return $entry; // not a shorts video, just forward the entry unchanged
-			}
 		}
-		return $entry; // should normally not be reached, just in case
+		return $entry;
 	}
 }
