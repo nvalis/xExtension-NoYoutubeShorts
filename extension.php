@@ -8,15 +8,22 @@ class NoYoutubeShortsExtension extends Minz_Extension {
         }
 
         public function filterYoutubeShorts(FreshRSS_Entry $entry): FreshRSS_Entry {
-                if (parse_url($entry->link(), PHP_URL_HOST) != 'www.youtube.com') {
-                        return $entry; // we are only interested in youtube URLs
+                if ($host !== 'www.youtube.com' && $host !== 'youtube.com' && $host !== 'm.youtube.com') {
+                        return $entry;
                 }
-
+                
                 $query = parse_url($entry->link(), PHP_URL_QUERY);
                 if ($query === null) {
                         return $entry; // no query string, can't be a video URL
                 }
 
+                // since june 2025 youtube shorts seem to be delivered directly as /shorts/ links in the feed
+                if ($path !== null && strpos($path, '/shorts/') !== false) {
+                        $entry->_isRead(true);
+                        return $entry;
+                }
+
+                // older versions deliver shorts videos as normal youtube.com/watch?v=... URLs
                 parse_str($query, $vars);
 
                 if (!isset($vars['v'])) {
